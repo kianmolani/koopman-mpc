@@ -1,0 +1,8 @@
+/Simulator/__pycache__/
+/Simulator/acados_ocp_nlp.json
+/Simulator/c_generated_code/
+/Simulator/libacados.dylib
+/Simulator/libblasfeo.dylib
+/Simulator/libhpipm.dylib
+/Simulator/libqpOASES_e.3.1.dylib
+/Simulator/libqpOASES_e.dylib
