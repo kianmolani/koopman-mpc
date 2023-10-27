@@ -231,7 +231,7 @@ def minimum_snap_trajectory_generator(traj_derivatives, yaw_derivatives, t_ref, 
 
         go_crazy_about_yaw = True
         if go_crazy_about_yaw:
-            print("Maximum yawrate before adaption: %.3f" % np.max(np.abs(rate[:, 2])))
+            # print("Maximum yawrate before adaption: %.3f" % np.max(np.abs(rate[:, 2])))
             q_new = q
             yaw_corr_acc = 0.0
             for i in range(1, len_traj):
@@ -249,7 +249,7 @@ def minimum_snap_trajectory_generator(traj_derivatives, yaw_derivatives, t_ref, 
             rate[:, 0] = w_int[:, 0]
             rate[:, 1] = w_int[:, 1]
             rate[:, 2] = w_int[:, 2]
-            print("Maximum yawrate after adaption: %.3f" % np.max(np.abs(rate[:, 2])))
+            # print("Maximum yawrate after adaption: %.3f" % np.max(np.abs(rate[:, 2])))
 
     # compute inputs
 
@@ -302,7 +302,7 @@ def check_trajectory(trajectory, tvec, plot=False):
 
     """
 
-    print("Checking trajectory integrity...")
+    # print("Checking trajectory integrity...")
 
     dt = np.expand_dims(np.gradient(tvec, axis=0), axis=1)
     numeric_derivative = np.gradient(trajectory, axis=0) / dt
@@ -319,9 +319,9 @@ def check_trajectory(trajectory, tvec, plot=False):
         analytic_velocity = trajectory[i, 7:10]
         errors[i, 0] = np.linalg.norm(numeric_velocity - analytic_velocity)
         if not np.allclose(analytic_velocity, numeric_velocity, atol=1e-2, rtol=1e-2):
-            print("inconsistent linear velocity")
-            print(numeric_velocity)
-            print(analytic_velocity)
+            # print("inconsistent linear velocity")
+            # print(numeric_velocity)
+            # print(analytic_velocity)
             return False
 
         # check if attitude is consistent with acceleration
@@ -331,9 +331,9 @@ def check_trajectory(trajectory, tvec, plot=False):
         numeric_thrust = numeric_thrust / np.linalg.norm(numeric_thrust)
         analytic_attitude = trajectory[i, 3:7]
         if np.abs(np.linalg.norm(analytic_attitude) - 1.0) > 1e-6:
-            print("quaternion does not have unit norm!")
-            print(analytic_attitude)
-            print(np.linalg.norm(analytic_attitude))
+            # print("quaternion does not have unit norm!")
+            # print(analytic_attitude)
+            # print(np.linalg.norm(analytic_attitude))
             return False
 
         e_z = np.array([0.0, 0.0, 1.0])
@@ -347,10 +347,10 @@ def check_trajectory(trajectory, tvec, plot=False):
         q_diff = q_dot_q(quaternion_inverse(analytic_attitude), numeric_attitude)
         errors[i, 1] = np.linalg.norm(q_diff[1:3])
         if not np.allclose(q_diff[1:3], np.zeros(2, ), atol=1e-3, rtol=1e-3):
-            print("Attitude and acceleration do not match!")
-            print(analytic_attitude)
-            print(numeric_attitude)
-            print(q_diff)
+            # print("Attitude and acceleration do not match!")
+            # print(analytic_attitude)
+            # print(numeric_attitude)
+            # print(q_diff)
             return False
 
         # check if bodyrates agree with attitude difference
@@ -360,15 +360,15 @@ def check_trajectory(trajectory, tvec, plot=False):
         analytic_bodyrates = trajectory[i, 10:13]
         errors[i, 2] = np.linalg.norm(numeric_bodyrates - analytic_bodyrates)
         if not np.allclose(numeric_bodyrates, analytic_bodyrates, atol=0.05, rtol=0.05):
-            print("inconsistent angular velocity")
-            print(numeric_bodyrates)
-            print(analytic_bodyrates)
+            # print("inconsistent angular velocity")
+            # print(numeric_bodyrates)
+            # print(analytic_bodyrates)
             return False
 
-    print("Trajectory check successful")
-    print("Maximum linear velocity error: %.5f" % np.max(errors[:, 0]))
-    print("Maximum attitude error: %.5f" % np.max(errors[:, 1]))
-    print("Maximum angular velocity error: %.5f" % np.max(errors[:, 2]))
+    # print("Trajectory check successful")
+    # print("Maximum linear velocity error: %.5f" % np.max(errors[:, 0]))
+    # print("Maximum attitude error: %.5f" % np.max(errors[:, 1]))
+    # print("Maximum angular velocity error: %.5f" % np.max(errors[:, 2]))
 
     if plot:
         num_bodyrates = np.stack(num_bodyrates)
