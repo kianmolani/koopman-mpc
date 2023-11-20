@@ -1,6 +1,7 @@
 """ 
 Implementation of 3D quadrotor model. Model dynamics burrowed from 
-https://rpg.ifi.uzh.ch/docs/RAL21_Torrente.pdf. Assuming '+' configuration
+https://rpg.ifi.uzh.ch/docs/RAL21_Torrente.pdf. Assuming '+' configuration.
+Important note: Shouldn't matter for Koopman or not.
 
 
 Created by: Kian Molani
