@@ -10,6 +10,7 @@ FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 """
+import os
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
@@ -615,6 +616,13 @@ def draw_poly(traj, u_traj, t, target_points=None, target_t=None):
     plt.title('Control inputs')
 
     plt.suptitle('Generated polynomial trajectory')
+
+    # 
+
+    data_dir = os.getcwd() + '/output/plots/samples/'
+    plt.savefig(data_dir + 'reference_trajectory.png')
+
+    #
 
     plt.show()
 
