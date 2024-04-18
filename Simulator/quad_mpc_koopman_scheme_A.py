@@ -11,6 +11,7 @@ Last updated: Mar. 26, 2023
 
 """
 
+import numpy as np
 import sys
 
 from acados_template import AcadosModel, AcadosOcp, AcadosOcpSolver
@@ -183,9 +184,7 @@ class QuadMPCKoopmanSchemeA:
         g = self.quad.g
         a_thrust = vertcat(0.0, 0.0, f_thrust[0] + f_thrust[1] + f_thrust[2] + f_thrust[3]) / self.quad.m
 
-        temp = mtimes(self.Ψ_inv, (mtimes(self.A, self.z) + mtimes(self.B, self.x) + mtimes(self.C, self.u)))
-
-        return (v_dot_q(a_thrust, self.q) + g) + temp[0:3]
+        return (v_dot_q(a_thrust, self.q) + g) + mtimes(self.Ψ_inv, (mtimes(self.A, self.z) + mtimes(self.B, self.x) + mtimes(self.C, self.u)))
 
     def w_dynamics(self):
         """
@@ -199,13 +198,10 @@ class QuadMPCKoopmanSchemeA:
         d_y = MX(self.quad.d_y)
         c_tau = MX(self.quad.c_tau)
 
-        # temp = mtimes(self.Ψ_inv, (mtimes(self.A, self.z) + mtimes(self.B, self.x) + mtimes(self.C, self.u)))
-
         return vertcat(
             (mtimes(f_thrust.T, d_y) + (self.quad.J[1] - self.quad.J[2]) * self.w[1] * self.w[2]) / self.quad.J[0],
             (-mtimes(f_thrust.T, d_x) + (self.quad.J[2] - self.quad.J[0]) * self.w[2] * self.w[0]) / self.quad.J[1],
-            (mtimes(f_thrust.T, c_tau) + (self.quad.J[0] - self.quad.J[1]) * self.w[0] * self.w[1]) / self.quad.J[2]) 
-        # + temp[3:]
+            (mtimes(f_thrust.T, c_tau) + (self.quad.J[0] - self.quad.J[1]) * self.w[0] * self.w[1]) / self.quad.J[2])
 
     def set_reference(self, x_ref, u_ref):
         """
